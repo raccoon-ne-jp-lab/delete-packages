@@ -1,5 +1,5 @@
 
-name: Delete Package Versions By Days
+name: Delete Packages
   
 description: A fork of actions/deletes-package-versions with added deletion based on retention days
 
@@ -86,5 +86,5 @@ runs:
   main: dist/index.js
 
 branding:
-  icon: package
+  icon: delete
   color: red
