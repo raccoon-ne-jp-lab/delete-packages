@@ -1,7 +1,7 @@
 
-name: Delete Package Versions
+name: Delete Package Versions By Days
 
-description: Deletes package versions
+description: A fork of actions/deletes-package-versions with added deletion based on retention days
 
 inputs:
 
