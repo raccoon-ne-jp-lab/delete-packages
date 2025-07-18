@@ -36,7 +36,7 @@ You are welcome to still raise bugs in this repo.
 # Usage
 
 ```yaml
-- uses: actions/delete-package-versions@v5
+- uses: actions/delete-package-versions-by-days@v0.1.0
   with:
   # Can be a single package version id, or a comma separated list of package version ids.
   # Defaults to an empty string.
@@ -151,7 +151,7 @@ You are welcome to still raise bugs in this repo.
   Delete all pre-release package versions except latest 10
 
   ```yaml
-  - uses: actions/delete-package-versions@v5
+  - uses: actions/delete-package-versions-by-days@v0.1.0
     with: 
       package-name: 'test-package'
       package-type: 'npm'
@@ -165,7 +165,7 @@ You are welcome to still raise bugs in this repo.
   Delete all pre-release package versions except latest 10 from a repo not having access to package
 
   ```yaml
-  - uses: actions/delete-package-versions@v5
+  - uses: actions/delete-package-versions-by-days@v0.1.0
     with: 
       owner: 'github'
       package-name: 'test-package'
@@ -186,7 +186,7 @@ You are welcome to still raise bugs in this repo.
   Delete all untagged versions except latest 10
 
   ```yaml
-  - uses: actions/delete-package-versions@v5
+  - uses: actions/delete-package-versions-by-days@v0.1.0
     with: 
       package-name: 'test-package'
       package-type: 'container'
@@ -205,7 +205,7 @@ You are welcome to still raise bugs in this repo.
   Delete all except latest 3 package versions excluding major versions as per semver
 
   ```yaml
-  - uses: actions/delete-package-versions@v5
+  - uses: actions/delete-package-versions-by-days@v0.1.0
     with: 
       package-name: 'test-package'
       package-type: 'npm'
@@ -222,7 +222,7 @@ You are welcome to still raise bugs in this repo.
   Delete all except latest 3 package versions excluding major versions as per semver from a repo not having access to package
 
   ```yaml
-  - uses: actions/delete-package-versions@v5
+  - uses: actions/delete-package-versions-by-days@v0.1.0
     with: 
       owner: 'github'
       package-name: 'test-package'
@@ -245,7 +245,7 @@ You are welcome to still raise bugs in this repo.
   Delete 3 oldest versions excluding major versions as per semver
 
   ```yaml
-  - uses: actions/delete-package-versions@v5
+  - uses: actions/delete-package-versions-by-days@v0.1.0
     with: 
       package-name: 'test-package'
       package-type: 'npm'
@@ -262,7 +262,7 @@ You are welcome to still raise bugs in this repo.
   Delete 3 oldest versions excluding major versions as per semver from a repo not having access to package
 
   ```yaml
-  - uses: actions/delete-package-versions@v5
+  - uses: actions/delete-package-versions-by-days@v0.1.0
     with: 
       owner: 'github'
       package-name: 'test-package'
@@ -283,7 +283,7 @@ You are welcome to still raise bugs in this repo.
   Delete all except latest 2 versions of a package hosted
 
   ```yaml
-  - uses: actions/delete-package-versions@v5
+  - uses: actions/delete-package-versions-by-days@v0.1.0
     with:
       package-name: 'test-package'
       package-type: 'npm'
@@ -299,7 +299,7 @@ You are welcome to still raise bugs in this repo.
   Delete all except latest 2 versions of a package hosted from a repo not having access to package
 
   ```yaml
-  - uses: actions/delete-package-versions@v5
+  - uses: actions/delete-package-versions-by-days@v0.1.0
     with:
       owner: 'github'
       package-name: 'test-package'
@@ -319,7 +319,7 @@ You are welcome to still raise bugs in this repo.
   Delete the oldest 3 version of a package hosted
 
   ```yaml
-  - uses: actions/delete-package-versions@v5
+  - uses: actions/delete-package-versions-by-days@v0.1.0
     with:
       package-name: 'test-package'
       package-type: 'npm'
@@ -335,7 +335,7 @@ You are welcome to still raise bugs in this repo.
   Delete the oldest 3 version of a package hosted from a repo not having access to package
 
   ```yaml
-  - uses: actions/delete-package-versions@v5
+  - uses: actions/delete-package-versions-by-days@v0.1.0
     with:
       owner: 'github'
       package-name: 'test-package'
@@ -353,7 +353,7 @@ You are welcome to still raise bugs in this repo.
   __Example__
 
   ```yaml
-  - uses: actions/delete-package-versions@v5
+  - uses: actions/delete-package-versions-by-days@v0.1.0
     with:
       package-name: 'test-package'
       package-type: 'npm'
@@ -364,7 +364,7 @@ You are welcome to still raise bugs in this repo.
   __Example__
 
   ```yaml
-  - uses: actions/delete-package-versions@v5
+  - uses: actions/delete-package-versions-by-days@v0.1.0
     with:
       owner: 'github'
       package-name: 'test-package'
@@ -383,7 +383,7 @@ You are welcome to still raise bugs in this repo.
   __Example__
 
   ```yaml
-  - uses: actions/delete-package-versions@v5
+  - uses: actions/delete-package-versions-by-days@v0.1.0
     with:
       package-version-ids: 'MDE0OlBhY2thZ2VWZXJzaW9uOTcyMDY3'
       package-name: 'test-package'
@@ -397,7 +397,7 @@ You are welcome to still raise bugs in this repo.
   __Example__
 
   ```yaml
-  - uses: actions/delete-package-versions@v5
+  - uses: actions/delete-package-versions-by-days@v0.1.0
     with:
       package-version-ids: 'MDE0OlBhY2thZ2VWZXJzaW9uOTcyMDY3'
       package-name: 'test-package'
@@ -416,7 +416,7 @@ You are welcome to still raise bugs in this repo.
   __Example__
 
   ```yaml
-  - uses: actions/delete-package-versions@v5
+  - uses: actions/delete-package-versions-by-days@v0.1.0
     with:
       package-version-ids: 'MDE0OlBhY2thZ2VWZXJzaW9uOTcyMDY3, MDE0OlBhY2thZ2VWZXJzaW9uOTcyMzQ5, MDE0OlBhY2thZ2VWZXJzaW9uOTcyMzUw'
       package-name: 'test-package'
@@ -430,7 +430,7 @@ You are welcome to still raise bugs in this repo.
   __Example__
 
   ```yaml
-  - uses: actions/delete-package-versions@v5
+  - uses: actions/delete-package-versions-by-days@v0.1.0
     with:
       package-version-ids: 'MDE0OlBhY2thZ2VWZXJzaW9uOTcyMDY3, MDE0OlBhY2thZ2VWZXJzaW9uOTcyMzQ5, MDE0OlBhY2thZ2VWZXJzaW9uOTcyMzUw'
       package-name: 'test-package'
@@ -449,7 +449,7 @@ You are welcome to still raise bugs in this repo.
   Delete all package versions older than 4 days
 
   ```yaml
-  - uses: actions/delete-package-versions@v5
+  - uses: actions/delete-package-versions-by-days@v0.1.0
     with:
       package-name: 'test-package'
       package-type: 'npm'
@@ -465,7 +465,7 @@ You are welcome to still raise bugs in this repo.
   Delete all package versions older than 4 days from a repo not having access to package
 
   ```yaml
-  - uses: actions/delete-package-versions@v5
+  - uses: actions/delete-package-versions-by-days@v0.1.0
     with:
       owner: 'github'
       package-name: 'test-package'
