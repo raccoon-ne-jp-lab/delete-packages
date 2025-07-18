@@ -1,4 +1,4 @@
-# Delete Package Versions
+# Delete Package Versions By Days
 
 This action deletes versions of a package from [GitHub Packages](https://github.com/features/packages). This action will only delete a maximum of 100 versions in one run.
 
@@ -85,6 +85,12 @@ You are welcome to still raise bugs in this repo.
   # Cannot be used with `num-old-versions-to-delete`.
   delete-only-untagged-versions:
 
+  # The number of days to retain package versions.
+  # If set, only versions older than the specified number of days will be deleted.
+  # This is useful for keeping recent versions while deleting older ones.
+  # Defaults to -1 (no retention).
+  retention-days:
+
   # The token used to authenticate with GitHub Packages.
   # Defaults to github.token.
   # Required if the repo running the workflow does not have access to delete the package.
@@ -108,6 +114,12 @@ You are welcome to still raise bugs in this repo.
   - `min-versions-to-keep` + `delete-only-pre-release-versions`
   - `delete-only-untagged-versions`
   - `min-versions-to-keep` + `delete-only-untagged-versions`
+  - `retention-days`
+  - `retention-days` + `delete-only-untagged-versions`
+  - `retention-days` + `min-versions-to-keep`
+  - `retention-days` + `delete-only-pre-release-versions`
+  - `retention-days` + `ignore-versions`
+
 
 # Scenarios
 
@@ -125,6 +137,8 @@ You are welcome to still raise bugs in this repo.
     - [Delete oldest version of a package](#delete-oldest-version-of-a-package)
     - [Delete a specific version of a package](#delete-a-specific-version-of-a-package)
     - [Delete multiple specific versions of a package](#delete-multiple-specific-versions-of-a-package)
+    - [Delete package versions older than 4 days](#delete-package-versions-older-than-4-days)
+    
 - [License](#license)
 
 
@@ -422,6 +436,42 @@ You are welcome to still raise bugs in this repo.
       package-name: 'test-package'
       package-type: 'npm'
       token: ${{ secrets.PAT }}
+  ```
+
+  <br>
+
+  ### Delete package versions older than 4 days
+
+  To delete package versions that are older than 4 days, the __package-name__, __package-type__ and __retention-days__ inputs are required.
+
+  __Example__
+
+  Delete all package versions older than 4 days
+
+  ```yaml
+  - uses: actions/delete-package-versions@v5
+    with:
+      package-name: 'test-package'
+      package-type: 'npm'
+      retention-days: 4
+  ```
+
+  To delete package versions older than 4 days from a repo not having access to package, the __owner__, __package-name__, __package-type__, __token__ and __retention-days__ inputs are required.
+
+  The [token][token] needs the delete packages and read packages scope. It is recommended [to store the token as a secret][secret]. In this example the [token][token] was stored as a secret named __GITHUB_PAT__.
+
+  __Example__
+
+  Delete all package versions older than 4 days from a repo not having access to package
+
+  ```yaml
+  - uses: actions/delete-package-versions@v5
+    with:
+      owner: 'github'
+      package-name: 'test-package'
+      package-type: 'npm'
+      token: ${{ secrets.GITHUB_PAT }}
+      retention-days: 4
   ```
 
 # License

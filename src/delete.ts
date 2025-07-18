@@ -80,6 +80,17 @@ export function finalIds(input: Input): Observable<string[]> {
           value = value.filter(info => !info.tagged)
         }
 
+        if (input.retentionDays >= 0) {
+          const retentionStartDate =
+            new Date().getTime() - input.retentionDays * 24 * 60 * 60 * 1000
+          value = value.filter(info => {
+            return (
+              info.created_at &&
+              new Date(info.created_at).getTime() < retentionStartDate
+            )
+          })
+        }
+
         let toDelete = 0
         if (input.minVersionsToKeep < 0) {
           toDelete = Math.min(

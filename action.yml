@@ -1,7 +1,7 @@
 
-name: Delete Package Versions
+name: Delete Package Versions By Days
 
-description: Deletes package versions
+description: A fork of actions/deletes-package-versions with added deletion based on retention days
 
 inputs:
 
@@ -63,6 +63,14 @@ inputs:
       By default this is set to false
     required: false
     default: "false"
+
+  retention-days:
+    description: >
+      Delete package versions older than the specified number of days.
+      The number of days to keep package versions.
+      By default this is set to -1 which means no retention by days.
+    required: false
+    default: "-1"
 
   token:
     description: >

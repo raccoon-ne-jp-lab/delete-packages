@@ -1,6 +1,6 @@
 import {getInput, setFailed} from '@actions/core'
 import {context} from '@actions/github'
-import {Input} from './input'
+import {Input, NO_RETENTION} from './input'
 import {Observable, throwError} from 'rxjs'
 import {deleteVersions} from './delete'
 import {catchError} from 'rxjs/operators'
@@ -22,7 +22,10 @@ function getActionInput(): Input {
     token: getInput('token'),
     deleteUntaggedVersions: getInput(
       'delete-only-untagged-versions'
-    ).toLowerCase()
+    ).toLowerCase(),
+    retentionDays: getInput('retention-days')
+      ? Number(getInput('retention-days'))
+      : NO_RETENTION
   })
 }
 

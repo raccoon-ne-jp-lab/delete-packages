@@ -7,9 +7,12 @@ export interface InputParams {
   minVersionsToKeep?: number
   ignoreVersions?: RegExp
   token?: string
+  retentionDays?: number
   deletePreReleaseVersions?: string
   deleteUntaggedVersions?: string
 }
+
+export const NO_RETENTION = -1
 
 const defaultParams = {
   packageVersionIds: [],
@@ -21,7 +24,8 @@ const defaultParams = {
   ignoreVersions: new RegExp(''),
   deletePreReleaseVersions: '',
   token: '',
-  deleteUntaggedVersions: ''
+  deleteUntaggedVersions: '',
+  retentionDays: NO_RETENTION
 }
 
 export class Input {
@@ -36,6 +40,7 @@ export class Input {
   token: string
   numDeleted: number
   deleteUntaggedVersions: string
+  retentionDays: number
 
   constructor(params?: InputParams) {
     const validatedParams: Required<InputParams> = {...defaultParams, ...params}
@@ -51,6 +56,7 @@ export class Input {
     this.token = validatedParams.token
     this.numDeleted = 0
     this.deleteUntaggedVersions = validatedParams.deleteUntaggedVersions
+    this.retentionDays = validatedParams.retentionDays
   }
 
   hasOldestVersionQueryInfo(): boolean {
@@ -71,12 +77,20 @@ export class Input {
       this.numOldVersionsToDelete > 1 &&
       (this.minVersionsToKeep >= 0 ||
         this.deletePreReleaseVersions === 'true' ||
-        this.deleteUntaggedVersions === 'true')
+        this.deleteUntaggedVersions === 'true' ||
+        this.retentionDays !== NO_RETENTION)
     ) {
       return false
     }
 
     if (this.packageType === '' || this.packageName === '') {
+      return false
+    }
+
+    if (
+      this.retentionDays !== NO_RETENTION &&
+      !Number.isSafeInteger(this.retentionDays)
+    ) {
       return false
     }
 
