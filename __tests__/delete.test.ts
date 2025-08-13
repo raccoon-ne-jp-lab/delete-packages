@@ -255,6 +255,104 @@ describe('index tests -- call rest', () => {
     })
   })
 
+  it('finalIds test - ignore-versions が未指定の場合はすべてのバージョンが対象', done => {
+    const numVersions = 10
+    let apiCalled = 0
+
+    const versions = getMockedVersionsResponse(numVersions)
+
+    server.use(
+      rest.get(
+        'https://api.github.com/users/test-owner/packages/npm/test-package/versions',
+        (req, res, ctx) => {
+          apiCalled++
+          return res(ctx.status(200), ctx.json(versions))
+        }
+      )
+    )
+
+    finalIds(getInput({ignoreVersions: null})).subscribe(ids => {
+      expect(apiCalled).toBe(1)
+      expect(ids.length).toBe(numVersions)
+      for (let i = 0; i < numVersions; i++) {
+        expect(ids[i]).toBe(versions[i].id.toString())
+      }
+      done()
+    })
+  })
+
+  it('finalIds test - ignore-versions で特定のバージョンを除外', done => {
+    const numVersions = 10
+    let apiCalled = 0
+
+    const versions = getMockedVersionsResponse(numVersions)
+    // 偶数番目のバージョンに特別な名前を付ける
+    for (let i = 0; i < numVersions; i++) {
+      if (i % 2 === 0) {
+        versions[i].name = `1.0.${i}-keep`
+      } else {
+        versions[i].name = `1.0.${i}`
+      }
+    }
+
+    server.use(
+      rest.get(
+        'https://api.github.com/users/test-owner/packages/npm/test-package/versions',
+        (req, res, ctx) => {
+          apiCalled++
+          return res(ctx.status(200), ctx.json(versions))
+        }
+      )
+    )
+
+    // -keepで終わるバージョンを除外
+    finalIds(getInput({ignoreVersions: new RegExp('-keep$')})).subscribe(
+      ids => {
+        expect(apiCalled).toBe(1)
+        expect(ids.length).toBe(numVersions / 2) // 奇数番目のみ残る
+        for (let i = 0; i < numVersions / 2; i++) {
+          expect(ids[i]).toBe(versions[i * 2 + 1].id.toString())
+        }
+        done()
+      }
+    )
+  })
+
+  it('finalIds test - ignore-versions でアンダースコアで始まるバージョンを除外', done => {
+    const numVersions = 10
+    let apiCalled = 0
+
+    const versions = getMockedVersionsResponse(numVersions)
+    // 偶数番目のバージョンをアンダースコアで始まる名前にする
+    for (let i = 0; i < numVersions; i++) {
+      if (i % 2 === 0) {
+        versions[i].name = `_v${i}.0.0`
+      } else {
+        versions[i].name = `v${i}.0.0`
+      }
+    }
+
+    server.use(
+      rest.get(
+        'https://api.github.com/users/test-owner/packages/npm/test-package/versions',
+        (req, res, ctx) => {
+          apiCalled++
+          return res(ctx.status(200), ctx.json(versions))
+        }
+      )
+    )
+
+    // アンダースコアで始まるバージョンを除外
+    finalIds(getInput({ignoreVersions: new RegExp('^_.+')})).subscribe(ids => {
+      expect(apiCalled).toBe(1)
+      expect(ids.length).toBe(numVersions / 2) // 奇数番目のみ残る
+      for (let i = 0; i < numVersions / 2; i++) {
+        expect(ids[i]).toBe(versions[i * 2 + 1].id.toString())
+      }
+      done()
+    })
+  })
+
   it('finalIds test - delete only untagged versions with minVersionsToKeep', done => {
     const numVersions = 50
     const numTaggedVersions = 20
@@ -476,7 +574,7 @@ const defaultInput: InputParams = {
   packageType: 'npm',
   numOldVersionsToDelete: RATE_LIMIT,
   minVersionsToKeep: -1,
-  ignoreVersions: RegExp('^$'),
+  ignoreVersions: null,
   token: 'test-token'
 }
 

@@ -74,7 +74,16 @@ export function finalIds(input: Input): Observable<string[]> {
           Here first filter out the versions that are to be ignored.
           Then compute number of versions to delete (toDelete) based on the inputs.
           */
-        value = value.filter(info => !input.ignoreVersions.test(info.version))
+        if (input.ignoreVersions) {
+          console.log(`Filtering with ignore pattern: ${input.ignoreVersions}`)
+          const beforeCount = value.length
+          value = value.filter(
+            info => !input.ignoreVersions!.test(info.version)
+          )
+          console.log(
+            `Filtered out ${beforeCount - value.length} versions matching ignore pattern`
+          )
+        }
 
         if (input.deleteUntaggedVersions === 'true') {
           value = value.filter(info => !info.tagged)

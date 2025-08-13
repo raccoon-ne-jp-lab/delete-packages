@@ -6,6 +6,8 @@ import {deleteVersions} from './delete'
 import {catchError} from 'rxjs/operators'
 
 function getActionInput(): Input {
+  const ignoreVersionsInput = getInput('ignore-versions').trim()
+
   return new Input({
     packageVersionIds: getInput('package-version-ids')
       ? getInput('package-version-ids').split(',')
@@ -15,7 +17,9 @@ function getActionInput(): Input {
     packageType: getInput('package-type'),
     numOldVersionsToDelete: Number(getInput('num-old-versions-to-delete')),
     minVersionsToKeep: Number(getInput('min-versions-to-keep')),
-    ignoreVersions: RegExp(getInput('ignore-versions')),
+    ignoreVersions: ignoreVersionsInput
+      ? new RegExp(ignoreVersionsInput)
+      : null,
     deletePreReleaseVersions: getInput(
       'delete-only-pre-release-versions'
     ).toLowerCase(),
